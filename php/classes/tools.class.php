@@ -1,14 +1,11 @@
 <?php
 
-class tool extends Base {
-  // properties
-  // make sure you declare ALL properties of the class
-  protected $name = "breda";
-  protected $chall ="simma";
+class Tool extends Base {
+  public $description;
+  public $skills;
 
-   //constructor
-  public function __construct($name) {
-    $this->name = $name;
+  public function __construct($tool_properties){
+    $this->description = $tool_properties["description"];
+    $this->skills = $tool_properties["skills"];
   }
-  
 }
