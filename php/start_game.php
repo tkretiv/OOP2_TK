@@ -223,7 +223,7 @@ $ds->challenges[] = new Challenge(
 
 
 //and echo out the human player
-echo(json_encode($ds->players[0]));
+// echo(json_encode($ds->players[0]));
 
 
 
@@ -234,6 +234,7 @@ $echo_arr = array(
   "players" => $ds->players,
   "tools" => $ds->available_tools,
   "challenges" => $ds->challenges,
+  "available_characters" => $available_classes,
 );
 
 echo(json_encode($echo_arr));
