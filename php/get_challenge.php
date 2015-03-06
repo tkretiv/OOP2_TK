@@ -24,7 +24,7 @@ $ds = new DBObjectSaver(array(
   "prefix" => "OOP2DB",
 ));
 
-echo(json_encode(array("challenge" => $ds->challenges[0], "index" => 0)));
+// echo(json_encode(array("challenge" => $ds->challenges[0], "index" => 0)));
 
 /**
  * AJAX data (if user wants to change challenge)
@@ -32,9 +32,13 @@ echo(json_encode(array("challenge" => $ds->challenges[0], "index" => 0)));
  */
 
 //this should be delivered with AJAX, else exit()
-$last_challenge_index = isset($_REQUEST["lastChallenge"]) ? $_REQUEST["lastChallenge"] / 1 : exit();
 
-
+if (!isset($_REQUEST["lastChallenge"])) {
+	echo(json_encode(array("challenge" => $ds->challenges[0], "index" => 0)));
+}
+else {
+	$last_challenge_index = isset($_REQUEST["lastChallenge"]) ? $_REQUEST["lastChallenge"] / 1 : exit();
+}
 
 /**
  * Pick a new challenge

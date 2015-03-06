@@ -45,11 +45,13 @@ if (!$challenge_instructions) {
 
 //due to how the code is written, the human player is 
 //always first in the array
+// $human_player = $ds->players[0];
+
 $human_player = $ds->players[0];
 
 //DEV
-$challenge_instructions["teamUp"] = false;
-$challenge_instructions["teamUpWith"] = 1;
+// $challenge_instructions["teamUp"] = false;
+// $challenge_instructions["teamUpWith"] = 1;
 
 //if $challenge_instructions["teamUp"] is not false (STRICT) user 
 //asked to have a companion for this challenge

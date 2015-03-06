@@ -4,10 +4,10 @@
 class Character extends Base {
   // properties
   // make sure you declare ALL properties of the class
-  protected $name;
-  protected $success =50;
+  public $name;
+  public $success =50;
 
-  protected $items = array();
+  public $items = array();
 
   //constructor
   public function __construct($name) {
@@ -57,4 +57,33 @@ class Character extends Base {
 
     return $this->doChallenge($challenge, $players);
   }
+
+ public function get_name() {
+    return $this->name;
+  }
+
+  //  public function get_tools() {
+  //   return $this->items;
+  // }
+
+  public function get_health() {
+    return $this->health;
+  }
+
+  public function get_level() {
+    return $this->level;
+  }
+
+  public function get_strength() {
+    return $this->strength;
+  }
+
+  public function get_awareness() {
+    return $this->awareness;
+  }
+
+  public function get_items() {
+    return $this->items;
+  }
+
 }

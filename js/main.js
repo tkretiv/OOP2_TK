@@ -15,20 +15,21 @@ $(function() {
     //new game clickHandler
     // ******** NEW GAME ************
     $(".newGame").click(function() {
-      $.ajax({
-        url: "php/start_game.php",
-        dataType: "json",
-        // data: {
-        //   game_id : 0
-        // },
-        success: function(data) {
-          console.log("NewGame success: ", data);
-          selectCharacter(data);
-        },
-        error: function(data) {
-          console.log("NewGame error: ", data.responseText);
-        }
-      });
+      selectCharacter();
+      // $.ajax({
+      //   url: "php/start_game.php",
+      //   dataType: "json",
+      //   // data: {
+      //   //   game_id : 0
+      //   // },
+      //   success: function(data) {
+      //     console.log("NewGame success: ", data);
+      //     selectCharacter(data);
+      //   },
+      //   error: function(data) {
+      //     console.log("NewGame error: ", data.responseText);
+      //   }
+      // });
     });
   }
 
@@ -39,7 +40,7 @@ $(function() {
    *
    */
 
-  function selectCharacter(storyData) {
+  function selectCharacter() {
     //empty DOM "printing" areas
     $(".storyEvent").html('');
     $(".storyOptions").html('');
@@ -52,7 +53,8 @@ $(function() {
     $(".storyOptions").append('<input type="text" id="characterName" placeholder="character name">');
 
     //find out available characters for chosen storyline
-    var availableCharacters = storyData.available_characters;
+    var availableCharacters = ["gaolin","arnold","ivan"];
+    // $available_classes = array("gaolin", "arnold", "ivan");
     //character class input
     $(".storyOptions").append('<h3>Din karakters typ:</h3>');
     //append each available player class as a radio input
@@ -74,51 +76,89 @@ $(function() {
       } else {
         //else start new game
 
-     $.ajax({
-          url: "php/get_challenge.php",
+         $.ajax({
+          url: "php/start_game.php",
           dataType: "json",
-          success:  function(data) {
-            console.log("startNewGame success: ", data);
-            CarryOutChallenge(characterName, characterClass, data);
+          data: {
+            playerChoice : {
+            "name" : characterName,
+            "class" : characterClass
+             }
           },
+          success:  function(data) {
+            DataSpel = data;
+            console.log("startNewGame success: ", DataSpel);
+                 //character name input
+             console.log("Player success: ", DataSpel.players[0].items);
+                 $.ajax({
+                  url: "php/get_challenge.php",
+                  dataType: "json",
+                  data: {
+                    lastChallenge : -1
+                  },
+                  success:  function(data) {
+                    console.log("get_challenge success: ", data);
+                    CarryOutChallenge(DataSpel.players[0], characterClass,data);
+                  },
+                  error: function(data) {
+                    console.log("get_challenge error: ", data.responseText);
+                  }
+                
+                });
+              },
           error: function(data) {
             console.log("startNewGame error: ", data.responseText);
           }
         
   });
-      
+
+      // Get_Utmaning(-1,CarryOutChallenge(characterName, characterClass, data));
       }
     });
   }
 
-  function CarryOutChallenge(chName,chClass, ChallengeData) {
-     $(".storyEvent").html('');
-    $(".storyOptions").html('');
 
-    //add some instructions and input fields (not a form!)
-    $(".storyEvent").append("<h2>Välkommen till utmaningen, "+chClass+" "+chName+"!:</h2>");
+  function CarryOutChallenge(myPlayer, characterClass, ChallengeData) {
 
-    //character name input
-    $(".storyOptions").append('<h3>Nu är det dags för:'+ChallengeData.challenge["description"]+'.</h3>');
-   
-    $(".storyOptions").append('<button class="DoChallenge">Kör det!</button>');
-     $(".storyOptions").append('<button class="TeamChallenge">Kör det med hjälp..</button>');
-      $(".storyOptions").append('<button class="nextChallenge">Nästa utmaningen.</button>');
+             $(".storyEvent").html('');
+              $(".storyOptions").html('');
+              var chName=myPlayer.name;
+              var chClass= characterClass;
+              //add some instructions and input fields (not a form!)
+              $(".storyEvent").append("<h2>Välkommen till utmaningen, "+chClass+" "+chName+"!</h2>");
+              var ToolList='';
+              
+              for (var i = 0; i < myPlayer.items.length; i++) {
+                 ToolList=ToolList+' '+myPlayer.items[i]["description"];
+               }
+               $(".storyEvent").append("<p>Du har haft grejer: "+ToolList+"!</p>");
 
-    //button clickhandler
+
+        
+              $(".storyOptions").append('<h3>Nu är det dags för:'+ChallengeData.challenge["description"]+'.</h3>');
+                 
+              $(".storyOptions").append('<button class="DoChallenge">Kör det!</button>');
+              $(".storyOptions").append('<button class="TeamChallenge">Kör det med hjälp..</button>');
+              $(".storyOptions").append('<button class="nextChallenge">Nästa utmaningen.</button>');
+
+     //button clickhandler
+
     //******** Val is done ****************
        $(".DoChallenge").click(function() {
 
      $.ajax({
-          url: "php/get_challenge.php",
+          url: "php/do_challenge.php",
           dataType: "json",
           data: {
-            playerChoice: {
-              "name" : characterName,
-              "class" : characterClass
+            challenge_instructions: {
+              "teamUp" : false
             }
           },
-          success: playNextEvent,
+          success: function (data) {
+            console.log("DoChallenge success: ", data);
+                        printEventData(data);
+
+          },
           error: function(data) {
             console.log("DoChallenge error: ", data.responseText);
           }
@@ -128,15 +168,18 @@ $(function() {
     $(".TeamChallenge").click(function() {
 
      $.ajax({
-          url: "php/get_challenge.php",
+          url: "php/do_challenge.php",
           dataType: "json",
           data: {
-            playerChoice: {
-              "name" : characterName,
-              "class" : characterClass
+            challenge_instructions: {
+              "teamUp" : true,
+              "teamUpWith" : 1
             }
           },
-          success: playNextEvent,
+          success: function(data) {
+            console.log("TeamChallenge success: ", data);
+            printEventData(data);
+          }, //playNextEvent,
           error: function(data) {
             console.log("TeamChallenge error: ", data.responseText);
           }

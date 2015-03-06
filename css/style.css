@@ -1,0 +1,27 @@
+h2 {
+	font: bold 15px arial, sans-serif;
+}
+
+h3 {
+	font: italic bold 12px/30px Georgia, serif;
+}
+
+.game {
+	margin: 20vh auto;
+	height: 75vh;
+	width: 75%;
+}
+
+.image {
+	margin: 20px auto;
+}
+
+input[type="radio"] { 
+	margin: 5px;
+	 } 
+
+button {
+	font: bold 12px arial, sans-serif;
+	padding: 3px;
+	margin: 5px;
+}	 

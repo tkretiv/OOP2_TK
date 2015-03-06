@@ -37,14 +37,14 @@ if (isset($_REQUEST["playerChoice"])) {
   $playerChoice = $_REQUEST["playerChoice"];
 } else {
   //dev code
-  $playerChoice = array(
-    "name" => "aName",
-    "class" => "arnold",
-  );
+  // $playerChoice = array(
+  //   "name" => "aName",
+  //   "class" => "arnold",
+  // );
 
   //real code
-  //echo(json_encode(falsee));
-  //exit();
+  echo(json_encode(falsee));
+  exit();
 }
 
 
@@ -53,7 +53,7 @@ if (isset($_REQUEST["playerChoice"])) {
  * Create all three players
  *
  */
-
+$player_class=$playerChoice["class"];
 //push human player first to players property
 $ds->players[] = New $playerChoice["class"]($playerChoice["name"]);
 
@@ -144,9 +144,22 @@ for ($i=0; $i < count($tool_properties); $i++) {
   $ds->available_tools[] = New Tool($tool_properties[$i]);
 }
 
-
-
-
+// $temp_tool = array();
+for ($i = 0; $i < count($ds->players); $i++) {
+  $person = $ds->players[$i];
+    while (count($person->items) < 3) {
+      $person -> pickupRandomTool($ds->available_tools);
+    }
+  // while (count($person->tools) < 3) {
+  //       $j=rand(0, 8);
+  //        if (!in_array($ds->$available_tools[$j], $temp_tool))
+  //        {
+  //         $person->tools[]= New $available_tools[$j];
+  //         array_push($temp_tool,$available_tools[$j]);
+  //        }
+  //           }
+          }
+        
 /**
  * Create some Challenges
  *
@@ -234,7 +247,7 @@ $echo_arr = array(
   "players" => $ds->players,
   "tools" => $ds->available_tools,
   "challenges" => $ds->challenges,
-  "available_characters" => $available_classes,
+  // "available_characters" => $available_classes,
 );
 
 echo(json_encode($echo_arr));
