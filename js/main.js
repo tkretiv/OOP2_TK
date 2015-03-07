@@ -98,7 +98,7 @@ $(function() {
                   },
                   success:  function(data) {
                     console.log("get_challenge success: ", data);
-                    CarryOutChallenge(DataSpel.players[0], characterClass,data);
+                    CarryOutChallenge(DataSpel.players[0],data);
                   },
                   error: function(data) {
                     console.log("get_challenge error: ", data.responseText);
@@ -118,20 +118,20 @@ $(function() {
   }
 
 
-  function CarryOutChallenge(myPlayer, characterClass, ChallengeData) {
+  function CarryOutChallenge(myPlayer, ChallengeData) {
 
              $(".storyEvent").html('');
               $(".storyOptions").html('');
               var chName=myPlayer.name;
-              var chClass= characterClass;
+              var chClass= myPlayer.typeName;
               //add some instructions and input fields (not a form!)
               $(".storyEvent").append("<h2>Välkommen till utmaningen, "+chClass+" "+chName+"!</h2>");
               var ToolList='';
-              
+
               for (var i = 0; i < myPlayer.items.length; i++) {
                  ToolList=ToolList+' '+myPlayer.items[i]["description"];
                }
-               $(".storyEvent").append("<p>Du har haft grejer: "+ToolList+"!</p>");
+               $(".storyEvent").append("<p>Du har grejer: "+ToolList+"!</p>");
 
 
         
@@ -156,7 +156,7 @@ $(function() {
           },
           success: function (data) {
             console.log("DoChallenge success: ", data);
-                        printEventData(data);
+                        printEventData(data, ChallengeData.index);
 
           },
           error: function(data) {
@@ -167,8 +167,7 @@ $(function() {
 
     $(".TeamChallenge").click(function() {
 
-     $.ajax({
-          url: "php/do_challenge.php",
+     $.ajax({           url: "php/do_challenge.php",
           dataType: "json",
           data: {
             challenge_instructions: {
@@ -178,7 +177,7 @@ $(function() {
           },
           success: function(data) {
             console.log("TeamChallenge success: ", data);
-            printEventData(data);
+            printEventData(data, ChallengeData.index);
           }, //playNextEvent,
           error: function(data) {
             console.log("TeamChallenge error: ", data.responseText);
@@ -212,7 +211,7 @@ $(function() {
    *
    */
 
-  function printEventData(eventData) {
+  function printEventData(eventData, lastchallenge_ind) {
     console.log("got eventData: ", eventData);
 
     //if event data is false, assume we are starting a new game
@@ -227,35 +226,48 @@ $(function() {
     }
 
     //get rid of array from AJAX result
-    eventData = eventData[0];
+    // eventData = eventData[0];
 
     //empty DOM "printing" areas
     $(".storyEvent").html("");
     $(".storyOptions").html("");
 
     //then append event data to DOM
-    $(".storyEvent").append("<h2>"+eventData.title+"</h2>");
-    $(".storyEvent").append("<p>"+eventData.description+"</p>");
+    if (eventData.result[0].typeName==eventData.playing[0].typeName) {
 
-    //then print event options
-    var eventOptions = eventData.options;
-    for (var i = 0; i < eventOptions.length; i++) {
-      //create a new button using jQuery
-      var option = $('<button>'+eventOptions[i].name+'</button>');
-      //attach option data using jQuery .data()
-      option.data("option", eventOptions[i]);
+        $(".storyEvent").append("<h2> Du vann! </h2>");
+        $(".storyEvent").append("<p> Du har nu "+eventData.playing[0].success+" poäng.</p>");
 
-      //then append option button to DOM
-      $(".storyOptions").append(option);
+    }
+    else {
+         $(".storyEvent").append("<h2> Du blev slaget av "+eventData.result[0].name+"</h2>");
+        $(".storyEvent").append("<p> "+eventData.result[0].name+" har nu "+eventData.result[0].success+" poäng.</p>");
+        $(".storyEvent").append("<p> Du har nu "+eventData.playing[0].success+" poäng.</p>");
+
     }
 
-    //add option clickHandler
-    $(".storyOptions button").click(function() {
-      //get action data from button .data()
-      var thisOption = $(this).data("option");
+     $(".storyOptions").append('<button class="startNextGame">Låt oss spela!</button>');
 
-      //then do the action!
-      doOption(thisOption);
+      $(".startNextGame").click(function() {
+        if (lastchallenge_ind<2) {
+      $.ajax({
+                  url: "php/get_challenge.php",
+                  dataType: "json",
+                  data: {
+                    lastChallenge : lastchallenge_ind
+                  },
+                  success:  function(data) {
+                    console.log("get_challenge2 success: ", data);
+                    CarryOutChallenge(eventData.playing[0], data);
+                  },
+                  error: function(data) {
+                    console.log("get_challenge2 error: ", data.responseText);
+                  }
+                
+                });
+       }
+       else {startOver();
+           }
     });
   }
 
@@ -318,17 +330,18 @@ $(function() {
 
     //start over clickhandler
     $(".startOver").click(function() {
-      $.ajax({
-        url: "reset.php",
-        dataType: "json",
-        data: {
-          startOver: 1
-        },
-        success: startNewGame,
-        error: function(data) {
-          console.log("startOver error: ", data.responseText);
-        }
-      });
+    //   $.ajax({
+    //     url: "reset.php",
+    //     dataType: "json",
+    //     data: {
+    //       startOver: 1
+    //     },
+    //     success: 
+    startNewGame();
+    //     error: function(data) {
+    //       console.log("startOver error: ", data.responseText);
+    //     }
+    //   });
     });
   }
 

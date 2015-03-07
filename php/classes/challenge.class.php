@@ -19,14 +19,14 @@ class Challenge extends Base {
       //by checking how many skillpoints the challenge requires
       $needed = $points;
       //and by checking how many skillpoints a person has
-      $has = $person->{$skill.'Skill'}; //grillSkill
+      $has = $person->{$skill}; //grillSkill
 
       //check if a person has any tools
-      if (count($person->tools) > 0) {
+      if (count($person->items) > 0) {
         //if they do, go through them
-        for ($i = 0; $i < count($person->tools); $i++) {
+        for ($i = 0; $i < count($person->items); $i++) {
           //and for each skill the tool has
-          foreach ($person->tools[$i]->skills as $toolSkill => $value) {
+          foreach ($person->items[$i]->skills as $toolSkill => $value) {
             //if a toolSkill matches the skill we are currently calculating
             if ($toolSkill == $skill) {
               //add the toolSkill points 

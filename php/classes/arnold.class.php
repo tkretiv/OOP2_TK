@@ -5,4 +5,5 @@ class arnold extends Character {
   public $kampa = 60;
   public $springa = 30;
   public $hoppa  = 20;
+  public $typeName = "Cowboy";
 }

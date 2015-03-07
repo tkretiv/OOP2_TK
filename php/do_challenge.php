@@ -55,7 +55,7 @@ $human_player = $ds->players[0];
 
 //if $challenge_instructions["teamUp"] is not false (STRICT) user 
 //asked to have a companion for this challenge
-if ($challenge_instructions["teamUp"]) {
+if ($challenge_instructions["teamUp"] and $challenge_instructions["teamUpWith"]>0) {
   //find the companion class
   $companion = &$ds->players[$challenge_instructions["teamUpWith"]];
   //and make the opponent whichever of the three is left
@@ -87,7 +87,7 @@ if ($challenge_instructions["teamUp"]) {
 
     //loser loses 5 points and a random tool
     $opponent->success -= 5;
-    $opponent->loseTool($ds->available_tools);
+    // $opponent->loseTool($ds->available_tools);
   } else {
     //Solo winners get 15 points
     $winner->success += 15;

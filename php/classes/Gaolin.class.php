@@ -6,4 +6,5 @@ class gaolin extends Character {
   public $kampa = 30;
   public $springa = 60;
   public $hoppa = 90;
+  public $typeName = "Shaolin munk";
 }

@@ -5,4 +5,5 @@ class ivan extends Character {
   public $kampa = 90;
   public $springa = 20;
   public $hoppa  = 30;
+  public $typeName = "Riddare";
 }
