@@ -3,10 +3,12 @@
 class Challenge extends Base {
   public $description;
   public $skills;
+  public $img;
   
-  public function __construct($description,$skills){
+  public function __construct($description,$skills,$img){
     $this->description = $description;
     $this->skills = $skills;
+     $this->img = $img;
   }
  public function howGoodAMatch($person){
     //total points a person has

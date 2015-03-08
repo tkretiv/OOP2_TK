@@ -80,58 +80,59 @@ $tool_properties = array(
   array(
     "description" => "Breda",
     "skills" => array(
-      "simma" => 20,
+      "simma" => 30,
     ),
   ),
   array(
-    "description" => "sten",
+    "description" => "Sten",
     "skills" => array(
       "kampa" => 30,
       "simma" => -10,
     ),
   ),
   array(
-    "description" => "käpp",
+    "description" => "Käpp",
     "skills" => array(
       "hoppa" => 10,
+      "kampa" => 5,
     ),
   ),
   array(
-    "description" => "stövlar",
+    "description" => "Stövlar",
     "skills" => array(
       "springa" => 20,
-      "kampa" => -10,
+      "simma" => -10,
     ),
   ),
   array(
-    "description" => "rustning",
+    "description" => "Rustning",
     "skills" => array(
       "kampa" => 20,
       "hoppa" => -20,
     ),
   ),
   array(
-    "description" => "hjälm",
+    "description" => "Hjälm",
     "skills" => array(
       "kampa" => 30,
-      "springa" => -20,
+      "springa" => -10,
     ),
   ),
   array(
-    "description" => "sabel",
+    "description" => "Sabel",
     "skills" => array(
       "kampa" => 20,
     ),
   ),
   array(
-    "description" => "svärd",
+    "description" => "Svärd",
     "skills" => array(
       "kampa" => 30,
       "hoppa" => -10,
     ),
   ),
   array(
-    "description" => "värja",
+    "description" => "Värja",
     "skills" => array(
       "kampa" => 10,
     ),
@@ -176,7 +177,8 @@ $ds->challenges[] = new Challenge(
     "hoppa" => 10,
     "springa" => 80,
     "simma" => 90
-  )
+  ),
+  "img/triathlon.jpg"
 );
 
 $ds->challenges[] = new Challenge(
@@ -186,7 +188,8 @@ $ds->challenges[] = new Challenge(
     "hoppa" => 10,
     "simma" => 0,
     "springa" => 30
-  )
+  ),
+  "img/kul.jpg"
 );
 
 $ds->challenges[] = new Challenge(
@@ -196,7 +199,8 @@ $ds->challenges[] = new Challenge(
     "hoppa" => 30,
     "simma" => 0,
     "springa" => 20
-  )
+  ),
+  "img/discobol.jpg"
 );
 
 $ds->challenges[] = new Challenge(
@@ -206,7 +210,8 @@ $ds->challenges[] = new Challenge(
     "hoppa" => 20,
     "simma" => 0,
     "springa" => 50
-  )
+  ),
+  "img/spjut.jpg"
 );
 
 $ds->challenges[] = new Challenge(
@@ -216,7 +221,8 @@ $ds->challenges[] = new Challenge(
     "simma" => 0,
     "springa" => 90,
     "kampa" => 10
-  )
+  ),
+  "img/barrier.jpg"
 );
 
 $ds->challenges[] = new Challenge(
@@ -226,7 +232,8 @@ $ds->challenges[] = new Challenge(
     "simma" => 0,
     "springa" => 50,
     "kampa" => 10
-  )
+  ),
+  "img/1.jpg"
 );
 
 $ds->challenges[] = new Challenge(
@@ -236,7 +243,8 @@ $ds->challenges[] = new Challenge(
     "simma" => 0,
     "springa" => 40,
     "kampa" => 10
-  )
+  ),
+  "img/hojdhopp.png"
 );
 
 $ds->challenges[] = new Challenge(
@@ -246,7 +254,8 @@ $ds->challenges[] = new Challenge(
     "simma" => 0,
     "springa" => 0,
     "kampa" => 90
-  )
+  ),
+  "img/power_lifting.png"
 );
 
 $ds->challenges[] = new Challenge(
@@ -256,7 +265,8 @@ $ds->challenges[] = new Challenge(
     "simma" => 0,
     "hoppa" => 10,
     "springa" => 10
-  )
+  ),
+  "img/kamp.jpg"
 );
 
 $ds->challenges[] = new Challenge(
@@ -266,7 +276,8 @@ $ds->challenges[] = new Challenge(
     "hoppa" => 60,
     "springa" => 10,
     "simma" => 0
-  )
+  ),
+  "img/kungfu.jpg"
 );
 
 $ds->challenges[] = new Challenge(
@@ -276,7 +287,8 @@ $ds->challenges[] = new Challenge(
     "hoppa" => 60,
     "springa" => 10,
     "simma" => 0
-  )
+  ),
+  "img/brasil.jpg"
 );
 
 

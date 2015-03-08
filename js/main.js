@@ -16,29 +16,11 @@ $(function() {
     // ******** NEW GAME ************
     $(".newGame").click(function() {
       selectCharacter();
-      // $.ajax({
-      //   url: "php/start_game.php",
-      //   dataType: "json",
-      //   // data: {
-      //   //   game_id : 0
-      //   // },
-      //   success: function(data) {
-      //     console.log("NewGame success: ", data);
-      //     selectCharacter(data);
-      //   },
-      //   error: function(data) {
-      //     console.log("NewGame error: ", data.responseText);
-      //   }
-      // });
+   
     });
   }
 
 
-
-  /**
-   * function to play the next chapter event
-   *
-   */
 
   function selectCharacter() {
     //empty DOM "printing" areas
@@ -63,7 +45,7 @@ $(function() {
       $(".storyOptions").append('<input type="radio" value="'+availableCharacters[i]+'" name="characterClass"><label>'+availableCharacters[i]+'</label><br>');
     }
     //finally append start new game button
-    $(".storyOptions").append('<button class="startNewGame">Låt oss spela!</button>');
+    $(".storyOptions").append('<button class="startNewGame">Låt oss börja spelet!</button>');
 
     //button clickhandler
     //******** Val is done ****************
@@ -135,9 +117,10 @@ $(function() {
                $(".storyEvent").append("<p>Du har grejer: "+ToolList+"</p>");
 
 
-        
+       
               $(".storyOptions").append('<h2>Nu är det dags för:</h2> <h3>'+ChallengeData.challenge["description"]+'.</h3>');
-                 
+               $(".image").html('<img src="'+ChallengeData.challenge["img"]+'">');
+
               $(".storyOptions").append('<button class="DoChallenge">Kör det!</button>');
               $(".storyOptions").append('<button class="TeamChallenge">Kör det med hjälp..</button>');
               $(".storyOptions").append('<button class="nextChallenge">Nästa utmaningen. Du ska betala 5 poäng!</button>');
@@ -208,30 +191,7 @@ $(function() {
 
 }
 
-  /**
-   * function to play the next chapter event
-   *
-   */
-
-  function playNextEvent() {
-    //get current chapter event data from play_chapter.php
-    $.ajax({
-      url: "start_game.php",
-      dataType: "json",
-      success: printEventData,
-      error: function(data) {
-        console.log("playNextEvent error: ", data.responseText);
-      }
-    });
-  }
-
-
-
-  /**
-   * function to print event data to DOM
-   *
-   */
-
+ 
   function printEventData(eventData, lastchallenge_ind) {
     console.log("got eventData: ", eventData);
 
@@ -281,6 +241,7 @@ $(function() {
                       console.log("the champion.php success: ", data);
                       NewGame=whoWon( data);
                       console.log("New ",NewGame);
+                     
                     },
                     error: function(data) {
                       console.log("the champion.php error: ", data.responseText);
@@ -312,6 +273,7 @@ $(function() {
           });
           }
           else {
+            $(".startNextGame").hide();
               // $(".storyEvent").append("<h2> Det var sista utmaningen.. </h2>");
               $(".storyEvent").append("<h2>Dina slutsummerad poäng:"+eventData.playing[0].success+" </h2>");
                $(".storyEvent").append("<h2>"+eventData.playing[1].name+" slutsummerad poäng:"+eventData.playing[1].success+" </h2>");
@@ -331,12 +293,12 @@ $(function() {
 
 function whoWon (eData) {
       if (eData.winners.length>0) {
-           $(".storyEvent").append("<h2> "+eData.winners[0]["typeName"]+" "+eData.winners[0]["name"]+" har vunnit!</h2>");
+           $(".storyEvent").append("<h1> "+eData.winners[0]["typeName"]+" "+eData.winners[0]["name"]+" har vunnit!</h1>");
             $(".storyEvent").append("<p>Först plats: "+eData.winners[0]["typeName"]+" "+eData.winners[0]["name"]+" med "+eData.winners[0]["success"]+" poäng </p>");
             $(".storyEvent").append("<p>Andra plats: "+eData.player[0].name+" slutsummerad poäng:"+eData.player[0].success+" </p>");
             $(".storyEvent").append("<p>Sista plats: "+eData.player[1].name+" slutsummerad poäng:"+eData.player[1].success+" </p>");
    
-          
+          $(".startNextGame").hide();
            $(".storyOptions").append('<button class="startNewGame">Låt oss spela en gång till!</button>');
            
             $(".startNewGame").click(function() {
@@ -348,38 +310,7 @@ function whoWon (eData) {
         
 }
 
-  /**
-   * function to do an option selected by user
-   *
-   */
-
-  // function doOption(option) {
-  //   $.ajax({
-  //     url: "do_option.php",
-  //     dataType: "json",
-  //     Data);
-  //   //empty DOM "printing" areas
-  //   $(".storyEvent").html("");
-  //   $(".storyOptions").html("");
-
-  //   for (var i = 0; i < doOptionData.rewards.length; i++) {
-  //     $(".storyEvent").append("<h3>"+doOptionData.rewards[i]+"</h3>");
-  //   }
-
-  //   $(".storyOptions").append("<button>Play next event...</button>");
-
-  //   //add option clickHandler
-  //   $(".storyOptions button").click(function() {
-  //     //get action data from button .data()
-  //     playNextEvent();
-  //   });
-  // }
-
-
-  /**
-   * function to start over
-   *
-   */
+  
 
   function startOver() {
     $(".storyEvent").html("<h2>You have completed the game!</h2>");

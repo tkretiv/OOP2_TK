@@ -14,11 +14,7 @@ class Character extends Base {
     $this->name = $name;
   }
 
-  //greet
-  public function greet() {
-    return "Hi! My name is ".$this->name;
-  }
-  
+   
 
   public function pickupRandomTool(&$items) {
     //take in $items by reference so that we work with the original
@@ -64,22 +60,6 @@ class Character extends Base {
 
    public function get_success() {
     return $this->success;
-  }
-
-  public function get_health() {
-    return $this->health;
-  }
-
-  public function get_level() {
-    return $this->level;
-  }
-
-  public function get_strength() {
-    return $this->strength;
-  }
-
-  public function get_awareness() {
-    return $this->awareness;
   }
 
   public function get_items() {
