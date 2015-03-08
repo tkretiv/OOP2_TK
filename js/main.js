@@ -126,20 +126,21 @@ $(function() {
               var chClass= myPlayer.typeName;
               //add some instructions and input fields (not a form!)
               $(".storyEvent").append("<h2>Välkommen till utmaningen, "+chClass+" "+chName+"!</h2>");
-              var ToolList='';
+              var ToolList='<ul>';
 
               for (var i = 0; i < myPlayer.items.length; i++) {
-                 ToolList=ToolList+' '+myPlayer.items[i]["description"];
+                 ToolList=ToolList+' <li>'+myPlayer.items[i]["description"]+'</li>';
                }
-               $(".storyEvent").append("<p>Du har grejer: "+ToolList+"!</p>");
+               ToolList=ToolList+"</ul>";
+               $(".storyEvent").append("<p>Du har grejer: "+ToolList+"</p>");
 
 
         
-              $(".storyOptions").append('<h3>Nu är det dags för:'+ChallengeData.challenge["description"]+'.</h3>');
+              $(".storyOptions").append('<h2>Nu är det dags för:</h2> <h3>'+ChallengeData.challenge["description"]+'.</h3>');
                  
               $(".storyOptions").append('<button class="DoChallenge">Kör det!</button>');
               $(".storyOptions").append('<button class="TeamChallenge">Kör det med hjälp..</button>');
-              $(".storyOptions").append('<button class="nextChallenge">Nästa utmaningen.</button>');
+              $(".storyOptions").append('<button class="nextChallenge">Nästa utmaningen. Du ska betala 5 poäng!</button>');
 
      //button clickhandler
 
@@ -184,6 +185,26 @@ $(function() {
           }
         });
    });
+
+     $(".nextChallenge").click(function() {
+
+     $.ajax({
+                    url: "php/get_challenge.php",
+                    dataType: "json",
+                    data: {
+                      lastChallenge : ChallengeData.index,
+                      refuse: true
+                    },
+                    success:  function(data) {
+                      console.log("get_challenge2 success: ", data);
+                      CarryOutChallenge(myPlayer, data);
+                    },
+                    error: function(data) {
+                      console.log("get_challenge2 error: ", data.responseText);
+                    }
+                  
+                  });
+  });
 
 }
 
@@ -233,90 +254,126 @@ $(function() {
     $(".storyOptions").html("");
 
     //then append event data to DOM
-    if (eventData.result[0].typeName==eventData.playing[0].typeName) {
+    if (eventData.result[0].typeName==eventData.playing[0].typeName || eventData.result[0].name=="Team1" ) {
 
         $(".storyEvent").append("<h2> Du vann! </h2>");
         $(".storyEvent").append("<p> Du har nu "+eventData.playing[0].success+" poäng.</p>");
 
     }
     else {
-         $(".storyEvent").append("<h2> Du blev slaget av "+eventData.result[0].name+"</h2>");
+         $(".storyEvent").append("<h2> Du blev slaget av "+eventData.result[0].typeName+" "+eventData.result[0].name+"</h2>");
         $(".storyEvent").append("<p> "+eventData.result[0].name+" har nu "+eventData.result[0].success+" poäng.</p>");
         $(".storyEvent").append("<p> Du har nu "+eventData.playing[0].success+" poäng.</p>");
 
     }
+     var NewGame=false;
+    if (lastchallenge_ind==10) {
+        
+        NewGame=true;
+        
+               
+    }
 
-     $(".storyOptions").append('<button class="startNextGame">Låt oss spela!</button>');
-
-      $(".startNextGame").click(function() {
-        if (lastchallenge_ind<2) {
-      $.ajax({
-                  url: "php/get_challenge.php",
-                  dataType: "json",
-                  data: {
-                    lastChallenge : lastchallenge_ind
-                  },
-                  success:  function(data) {
-                    console.log("get_challenge2 success: ", data);
-                    CarryOutChallenge(eventData.playing[0], data);
-                  },
-                  error: function(data) {
-                    console.log("get_challenge2 error: ", data.responseText);
-                  }
-                
-                });
-       }
-       else {startOver();
-           }
-    });
+              $.ajax({
+                    url: "php/thechampion.php",
+                    dataType: "json",
+                    success:  function(data) {
+                      console.log("the champion.php success: ", data);
+                      NewGame=whoWon( data);
+                      console.log("New ",NewGame);
+                    },
+                    error: function(data) {
+                      console.log("the champion.php error: ", data.responseText);
+                    }
+                  
+                  });
+     
+          if (!NewGame) {
+           $(".storyOptions").append('<button class="startNextGame">Låt oss spela!</button>');
+           console.log("BUTTON",NewGame);
+           $(".startNextGame").click(function() {
+          
+              $.ajax({
+                    url: "php/get_challenge.php",
+                    dataType: "json",
+                    data: {
+                      lastChallenge : lastchallenge_ind
+                    },
+                    success:  function(data) {
+                      console.log("get_challenge2 success: ", data);
+                      CarryOutChallenge(eventData.playing[0], data);
+                    },
+                    error: function(data) {
+                      console.log("get_challenge2 error: ", data.responseText);
+                    }
+                  
+                  });
+         
+          });
+          }
+          else {
+              // $(".storyEvent").append("<h2> Det var sista utmaningen.. </h2>");
+              $(".storyEvent").append("<h2>Dina slutsummerad poäng:"+eventData.playing[0].success+" </h2>");
+               $(".storyEvent").append("<h2>"+eventData.playing[1].name+" slutsummerad poäng:"+eventData.playing[1].success+" </h2>");
+              $(".storyEvent").append("<h2>"+eventData.playing[2].name+" slutsummerad poäng:"+eventData.playing[2].success+" </h2>");
+   
+              $(".storyOptions").append('<button class="startNewGame">Låt oss spela en gång till!</button>');
+              $(".startNewGame").click(function() {
+              startNewGame();
+            });
+          }
+       
+     
+      
   }
 
 
+
+function whoWon (eData) {
+      if (eData.winners.length>0) {
+           $(".storyEvent").append("<h2> "+eData.winners[0]["typeName"]+" "+eData.winners[0]["name"]+" har vunnit!</h2>");
+            $(".storyEvent").append("<p>Först plats: "+eData.winners[0]["typeName"]+" "+eData.winners[0]["name"]+" med "+eData.winners[0]["success"]+" poäng </p>");
+            $(".storyEvent").append("<p>Andra plats: "+eData.player[0].name+" slutsummerad poäng:"+eData.player[0].success+" </p>");
+            $(".storyEvent").append("<p>Sista plats: "+eData.player[1].name+" slutsummerad poäng:"+eData.player[1].success+" </p>");
+   
+          
+           $(".storyOptions").append('<button class="startNewGame">Låt oss spela en gång till!</button>');
+           
+            $(".startNewGame").click(function() {
+                startNewGame();
+            });
+            return true;
+          }
+        else {return false;}
+        
+}
 
   /**
    * function to do an option selected by user
    *
    */
 
-  function doOption(option) {
-    $.ajax({
-      url: "do_option.php",
-      dataType: "json",
-      data: {
-        option: option
-      },
-      success: printDoOptionLog,
-      error: function(data) {
-        console.log("doOption error: ", data.responseText);
-      }
-    });
-  }
+  // function doOption(option) {
+  //   $.ajax({
+  //     url: "do_option.php",
+  //     dataType: "json",
+  //     Data);
+  //   //empty DOM "printing" areas
+  //   $(".storyEvent").html("");
+  //   $(".storyOptions").html("");
 
+  //   for (var i = 0; i < doOptionData.rewards.length; i++) {
+  //     $(".storyEvent").append("<h3>"+doOptionData.rewards[i]+"</h3>");
+  //   }
 
+  //   $(".storyOptions").append("<button>Play next event...</button>");
 
-  /**
-   * function to print doOption log to DOM
-   *
-   */
-
-  function printDoOptionLog(doOptionData) {
-    console.log("doOptionData: ", doOptionData);
-    //empty DOM "printing" areas
-    $(".storyEvent").html("");
-    $(".storyOptions").html("");
-
-    for (var i = 0; i < doOptionData.rewards.length; i++) {
-      $(".storyEvent").append("<h3>"+doOptionData.rewards[i]+"</h3>");
-    }
-
-    $(".storyOptions").append("<button>Play next event...</button>");
-
-    //add option clickHandler
-    $(".storyOptions button").click(function() {
-      //get action data from button .data()
-      playNextEvent();
-    });
-  }
+  //   //add option clickHandler
+  //   $(".storyOptions button").click(function() {
+  //     //get action data from button .data()
+  //     playNextEvent();
+  //   });
+  // }
 
 
   /**

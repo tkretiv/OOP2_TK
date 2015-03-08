@@ -44,6 +44,10 @@ else {
  * Pick a new challenge
  *
  */
+if (isset($_REQUEST["refuse"])) {
+	$ds->players[0]->success-= 5;
+	// $last_challenge_index = isset($_REQUEST["lastChallenge"]) ? $_REQUEST["lastChallenge"] / 1 : exit();
+}
 
 //check if $last_challenge_index was last of all challenges (set to 0)
 if ($last_challenge_index >= count($ds->challenges) - 1) {

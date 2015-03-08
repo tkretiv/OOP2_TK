@@ -25,3 +25,7 @@ button {
 	padding: 3px;
 	margin: 5px;
 }	 
+
+ul {
+    list-style-type: disc;
+   }

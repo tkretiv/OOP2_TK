@@ -62,7 +62,7 @@ $available_classes = array("gaolin", "arnold", "ivan");
 
 for ($i=0; $i < count($available_classes); $i++) { 
   if ($available_classes[$i] != $player_class) {
-    $ds->players[] = New $available_classes[$i]("Bot".$i);
+    $ds->players[] = New $available_classes[$i]($available_classes[$i]);
   }
 }
 
@@ -168,57 +168,102 @@ for ($i = 0; $i < count($ds->players); $i++) {
 
 //all accept a description and an associative array of settings
 $ds->challenges[] = new Challenge(
-  "Klassisk triathlon! Först ska du Simma! ".
-  "Ni ska löpa endast 1 mil så snabt som möjligt.".
-  "Den sista är Cykling.",
+  "Klassisk triathlon! <br>Först ska du Simma! <br>".
+  "Efter ska ni löpa endast 1 mil så snabt som möjligt. <br>".
+  "Den sista är Cykling. ",
   array(
-    "kampa" => 0,
+    "kampa" => 10,
     "hoppa" => 10,
     "springa" => 80,
-    "simma" => 70
+    "simma" => 90
   )
 );
 
 $ds->challenges[] = new Challenge(
-  "Mångkamp. Dag 1. Först Kulstötning".
-  "Nästa Diskus".
-  "Och äntligen, din favoritsk: Spjutkastning.",
+  "Mångkamp. Dag 1. Kulstötning. ",
   array(
     "kampa" => 60,
-    "hoppa" => 60,
+    "hoppa" => 10,
     "simma" => 0,
     "springa" => 30
   )
 );
 
 $ds->challenges[] = new Challenge(
-  "Mångkamp. Dag 2. 500 meter häck.".
-  "Längdhopp. ".
-  "Höjdhopp.",
+  "Mångkamp. Dag 2. Diskus. ",
   array(
-    "hoppa" => 80,
+    "kampa" => 60,
+    "hoppa" => 30,
     "simma" => 0,
-    "springa" => 70,
+    "springa" => 20
+  )
+);
+
+$ds->challenges[] = new Challenge(
+  "Mångkamp. Dag 3.  Spjutkastning.",
+  array(
+    "kampa" => 60,
+    "hoppa" => 20,
+    "simma" => 0,
+    "springa" => 50
+  )
+);
+
+$ds->challenges[] = new Challenge(
+  "Mångkamp. Dag 4. 500 meter häck. ",
+  array(
+    "hoppa" => 20,
+    "simma" => 0,
+    "springa" => 90,
     "kampa" => 10
   )
 );
 
 $ds->challenges[] = new Challenge(
-  "Dags att kämpa. Brottning ",
+  "Mångkamp. Dag 5. Längdhopp. ",
+  array(
+    "hoppa" => 80,
+    "simma" => 0,
+    "springa" => 50,
+    "kampa" => 10
+  )
+);
+
+$ds->challenges[] = new Challenge(
+  "Mångkamp. Dag 6. Höjdhopp.",
+  array(
+    "hoppa" => 90,
+    "simma" => 0,
+    "springa" => 40,
+    "kampa" => 10
+  )
+);
+
+$ds->challenges[] = new Challenge(
+  "Styrkelyft.",
+  array(
+    "hoppa" => 10,
+    "simma" => 0,
+    "springa" => 0,
+    "kampa" => 90
+  )
+);
+
+$ds->challenges[] = new Challenge(
+  "Dags att kämpa. Brottning. ",
   array(
     "kampa" => 90,
     "simma" => 0,
-    "hoppa" => 20,
+    "hoppa" => 10,
     "springa" => 10
   )
 );
 
 $ds->challenges[] = new Challenge(
-  "Dags att kämpa. Kung Fu".
-  "Brasiliansk jiu-jitsu.",
+  "Dags att kämpa. Kung Fu",
   array(
-    "kampa" => 50,
-    "hoppa" => 90,
+    "kampa" => 70,
+    "hoppa" => 60,
     "springa" => 10,
     "simma" => 0
   )
@@ -229,7 +274,7 @@ $ds->challenges[] = new Challenge(
   array(
     "kampa" => 80,
     "hoppa" => 60,
-    "springa" => 20,
+    "springa" => 10,
     "simma" => 0
   )
 );

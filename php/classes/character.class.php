@@ -62,9 +62,9 @@ class Character extends Base {
     return $this->name;
   }
 
-  //  public function get_tools() {
-  //   return $this->items;
-  // }
+   public function get_success() {
+    return $this->success;
+  }
 
   public function get_health() {
     return $this->health;
