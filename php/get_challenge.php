@@ -18,20 +18,12 @@ include_once("nodebite-swiss-army-oop.php");
 //and store it in the $ds variable
 $ds = new DBObjectSaver(array(
   "host" => "127.0.0.1",
-  "dbname" => "OOP2DB",
+  "dbname" => "wu14oop2",
   "username" => "root",
   "password" => "mysql",
-  "prefix" => "OOP2DB",
+  "prefix" => "wu14oop2",
 ));
 
-// echo(json_encode(array("challenge" => $ds->challenges[0], "index" => 0)));
-
-/**
- * AJAX data (if user wants to change challenge)
- *
- */
-
-//this should be delivered with AJAX, else exit()
 
 if (!isset($_REQUEST["lastChallenge"])) {
 	echo(json_encode(array("challenge" => $ds->challenges[0], "index" => 0)));

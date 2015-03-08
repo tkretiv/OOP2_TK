@@ -18,10 +18,10 @@ include_once("nodebite-swiss-army-oop.php");
 //and store it in the $ds variable
 $ds = new DBObjectSaver(array(
   "host" => "127.0.0.1",
-  "dbname" => "OOP2DB",
+  "dbname" => "wu14oop2",
   "username" => "root",
   "password" => "mysql",
-  "prefix" => "OOP2DB",
+  "prefix" => "wu14oop2",
 ));
 
 //destroy old game data
@@ -36,18 +36,10 @@ unset($ds->available_tools);
 if (isset($_REQUEST["playerChoice"])) {
   $playerChoice = $_REQUEST["playerChoice"];
 } else {
-  //dev code
-  // $playerChoice = array(
-  //   "name" => "aName",
-  //   "class" => "arnold",
-  // );
-
-  //real code
-  echo(json_encode(falsee));
+ 
+  echo(json_encode(false));
   exit();
 }
-
-
 
 /**
  * Create all three players
@@ -65,9 +57,6 @@ for ($i=0; $i < count($available_classes); $i++) {
     $ds->players[] = New $available_classes[$i]($available_classes[$i]);
   }
 }
-
-
-
 
 /**
  * Create all nine tools
@@ -151,14 +140,7 @@ for ($i = 0; $i < count($ds->players); $i++) {
     while (count($person->items) < 3) {
       $person -> pickupRandomTool($ds->available_tools);
     }
-  // while (count($person->tools) < 3) {
-  //       $j=rand(0, 8);
-  //        if (!in_array($ds->$available_tools[$j], $temp_tool))
-  //        {
-  //         $person->tools[]= New $available_tools[$j];
-  //         array_push($temp_tool,$available_tools[$j]);
-  //        }
-  //           }
+ 
           }
         
 /**
@@ -169,9 +151,9 @@ for ($i = 0; $i < count($ds->players); $i++) {
 
 //all accept a description and an associative array of settings
 $ds->challenges[] = new Challenge(
-  "Klassisk triathlon! <br>Först ska du Simma! <br>".
-  "Efter ska ni löpa endast 1 mil så snabt som möjligt. <br>".
-  "Den sista är Cykling. ",
+  "Klassisk triathlon! <br>Först ska du simma! <br>".
+  "Efter ska ni löpa endast 1 mil så snabbt som möjligt. <br>".
+  "Den sista är cykling. ",
   array(
     "kampa" => 10,
     "hoppa" => 10,
@@ -292,19 +274,12 @@ $ds->challenges[] = new Challenge(
 );
 
 
-//and echo out the human player
-// echo(json_encode($ds->players[0]));
-
-
-
-
 
 //echo out everything created
 $echo_arr = array(
   "players" => $ds->players,
   "tools" => $ds->available_tools,
   "challenges" => $ds->challenges,
-  // "available_characters" => $available_classes,
 );
 
 echo(json_encode($echo_arr));

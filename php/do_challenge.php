@@ -18,14 +18,11 @@ include_once("nodebite-swiss-army-oop.php");
 //and store it in the $ds variable
 $ds = new DBObjectSaver(array(
   "host" => "127.0.0.1",
-  "dbname" => "OOP2DB",
+  "dbname" => "wu14oop2",
   "username" => "root",
   "password" => "mysql",
-  "prefix" => "OOP2DB",
+  "prefix" => "wu14oop2",
 ));
-
-
-
 
 
 //this should be delivered with AJAX
@@ -37,21 +34,13 @@ if (!$challenge_instructions) {
   exit();
 }
 
-
 /**
  * Play the current challenge
  *
  */
 
-//due to how the code is written, the human player is 
-//always first in the array
-// $human_player = $ds->players[0];
-
 $human_player = $ds->players[0];
 
-//DEV
-// $challenge_instructions["teamUp"] = false;
-// $challenge_instructions["teamUpWith"] = 1;
 
 //if $challenge_instructions["teamUp"] is not false (STRICT) user 
 //asked to have a companion for this challenge
